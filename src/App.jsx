@@ -17,7 +17,6 @@ import PrivateRoute from "./components/PrivateRoute";
 function App() {
   return (
     <BrowserRouter>
-      {localStorage.getItem("token") && <NavBar />}
       <Routes>
         {/* public route */}
         <Route path="/" element={<Home />} />
