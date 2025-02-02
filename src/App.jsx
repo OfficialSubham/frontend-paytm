@@ -14,23 +14,32 @@ import Dashboard from "./components/Dashboard";
 import { useEffect } from "react";
 import Home from "./components/Home";
 import PrivateRoute from "./components/PrivateRoute";
+import { RecoilRoot, useRecoilValue } from "recoil";
+import { userAtom } from "./store/atom";
 function App() {
+  // useEffect(() => {}, [localStorage.getItem("token")]);
+
+  
+
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* public route */}
-        <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<Signup />} />
+    <RecoilRoot>
+      <BrowserRouter>
+      <NavBar/>
+        <Routes>
+          {/* public route */}
+          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
 
-        {/* Privete Route */}
-        <Route element={<PrivateRoute />}>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/send" element={<Send />} />
-        </Route>
-        <Route path="*" element={<div>Not Found</div>}/>
-      </Routes>
-    </BrowserRouter>
+          {/* Privete Route */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/send" element={<Send />} />
+          </Route>
+          <Route path="*" element={<div>Not Found</div>} />
+        </Routes>
+      </BrowserRouter>
+    </RecoilRoot>
   );
 }
 
