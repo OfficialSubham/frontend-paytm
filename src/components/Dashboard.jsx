@@ -2,31 +2,16 @@ import React, { useEffect, useState } from "react";
 import NavBar from "./NavBar";
 import Users from "./Users";
 import axios from "axios";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValueLoadable } from "recoil";
 import { userAtom } from "../store/atom";
+import { userSelector } from "../store/selector";
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
+  const loadableUserSelector = useRecoilValueLoadable(userSelector)
   const [userInfoAtom, setUserInfoAtom] = useRecoilState(userAtom)
   const [filterSearch, setFilterSearch] = useState("");
   const backendUrl = import.meta.env.VITE_API_URL;
-  const getAccountInfo = async () => {
-    try {
-      const accountInfo = await axios(`${backendUrl}/user/myinfo`, {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      if (accountInfo.status === 200) {
-        if (accountInfo.data.info) {
-          setUserInfoAtom({
-            name: accountInfo.data.info.name,
-            balance: accountInfo.data.info.balance,
-          });
-        }
-      }
-    } catch (error) {}
-  };
 
   const getAllUsers = async () => {
     try {
@@ -47,9 +32,11 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    getAccountInfo();
     getAllUsers();
-  }, []);
+    if(loadableUserSelector.state === "hasValue" && Object.keys(userInfoAtom).length === 0) {
+      setUserInfoAtom(loadableUserSelector.contents)
+    }
+  }, [loadableUserSelector, userInfoAtom]);
 
   return (
     userInfoAtom.name && (

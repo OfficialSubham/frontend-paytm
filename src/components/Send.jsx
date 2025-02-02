@@ -4,7 +4,6 @@ import NavBar from "./NavBar";
 const Send = () => {
   return (
     <>
-      <NavBar />
       <div className="min-h-screen h-auto flex justify-center items-center">
         <div className="w-80 bg-white flex flex-col items-center rounded-md p-4">
           <h2 className="text-2xl font-bold mb-10">Send Money</h2>

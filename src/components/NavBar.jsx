@@ -4,6 +4,7 @@ import { userAtom } from "../store/atom";
 
 const NavBar = () => {
   const userInfoAtom = useRecoilValue(userAtom);
+  console.log(userInfoAtom);
   
   return (
     Object.keys(userInfoAtom).length > 0 && (
