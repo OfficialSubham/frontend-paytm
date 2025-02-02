@@ -19,8 +19,27 @@ export const userSelector = selector({
         }
       }
     } catch (error) {
-      console.log("some error occured");
+      alert("some error occured");
       return {};
     }
   },
 });
+
+export const allUsersSelector = selector({
+  key: "allUsersSelector",
+  get: async () => {
+    try {
+      const res = await axios.get(`${backendUrl}/user/bulk?filter=`, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (res.status === 200) {
+        return res.data.matchedUsers;
+      }
+    } catch (error) {
+      alert("Some error Occured");
+      return [];
+    }
+  },
+})

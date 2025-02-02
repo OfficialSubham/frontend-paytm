@@ -24,7 +24,6 @@ function App() {
   return (
     <RecoilRoot>
       <BrowserRouter>
-      <NavBar/>
         <Routes>
           {/* public route */}
           <Route path="/" element={<Home />} />

@@ -1,11 +1,16 @@
-import React from "react";
-import { useRecoilValue } from "recoil";
+import React, { useEffect } from "react";
+import { useRecoilState, useRecoilStateLoadable, useRecoilValue, useRecoilValueLoadable } from "recoil";
 import { userAtom } from "../store/atom";
+import { userSelector } from "../store/selector";
 
 const NavBar = () => {
-  const userInfoAtom = useRecoilValue(userAtom);
-  console.log(userInfoAtom);
-  
+  const [userInfoAtom, setUserInfoAtom] = useRecoilState(userAtom)
+  const loadableUserSelector = useRecoilValueLoadable(userSelector)
+    useEffect(() => {
+      if(loadableUserSelector.state === "hasValue" && Object.keys(userInfoAtom).length === 0) {
+        setUserInfoAtom(loadableUserSelector.contents)
+      }
+    }, [loadableUserSelector, userInfoAtom]);
   return (
     Object.keys(userInfoAtom).length > 0 && (
       <div className="w-full bg-white h-auto flex justify-between px-3 py-4 fixed top-0 border-b-2 border-gray-400 shadow-md">
