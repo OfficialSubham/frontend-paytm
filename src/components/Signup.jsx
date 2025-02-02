@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import validator from "validator";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -9,8 +9,8 @@ const Signup = () => {
     email: "",
     password: "",
   });
-  const navigate = useNavigate()
-  const backendUrl = import.meta.env.VITE_API_URL
+  const navigate = useNavigate();
+  const backendUrl = import.meta.env.VITE_API_URL;
 
   const handleEnter = (e, next) => {
     if (e.key === "Enter") {
@@ -37,13 +37,14 @@ const Signup = () => {
       return alert("Name cannot be less then 3 letters");
     }
 
-    const res = await axios.post(`${backendUrl}/user/sign-up`, {
-      form
-    })
+    const res = await axios.post(`${backendUrl}/user/sign-up`, form);
 
-    if(res.status === 200) {
-      localStorage.setItem("token", res.data.token)
-      navigate("/dashboard")
+    if (res.status === 200) {
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+        return navigate("/dashboard");
+      }
+      return alert(res.data.msg);
     }
 
     setForm({
@@ -56,6 +57,10 @@ const Signup = () => {
   const nameRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+
+  useEffect(() => {
+    localStorage.removeItem("token");
+  }, []);
 
   return (
     <div className="h-auto min-h-screen flex justify-center items-center">

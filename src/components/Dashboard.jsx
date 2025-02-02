@@ -3,6 +3,15 @@ import NavBar from "./NavBar";
 import Users from "./Users";
 
 const Dashboard = () => {
+
+  const getAccountInfo = async () => {
+    
+  }
+
+  useEffect(() => {
+    
+  }, [])
+
   return (
     <>
       <NavBar />
