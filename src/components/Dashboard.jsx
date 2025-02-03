@@ -17,6 +17,22 @@ const Dashboard = () => {
     setFilterSearch(e.target.value);
   };
 
+  const handleSearchFilter = async() => {
+    try {
+      const res = await axios.get(`${backendUrl}/user/bulk?filter=${filterSearch}`, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (res.status === 200) {
+        return setUsers(res.data.matchedUsers)
+      }
+    } catch (error) {
+      alert("Some error Occured");
+      return [];
+    }
+  }
+
   useEffect(() => {
     if (lodableAllUsers.state === "hasValue" && users.length === 0) {
       setUsers(lodableAllUsers.contents);
@@ -41,12 +57,17 @@ const Dashboard = () => {
                 placeholder="Search users..."
                 value={filterSearch}
                 onChange={handleFilter}
+                onKeyDown={(e) => {
+                  if(e.key === "Enter") {
+                    handleSearchFilter()
+                  }
+                }}
               />
-              <button className="px-3 py-2 bg-black text-white font-bold rounded-md">
+              <button className="px-3 py-2 bg-black text-white font-bold rounded-md" onClick={handleSearchFilter}>
                 Search
               </button>
             </div>
-            {users.length > 0 &&
+            {users.length > 0 ?
               users.map((eachUser) => {
                 return (
                   <Users
@@ -56,7 +77,7 @@ const Dashboard = () => {
                     eachUserId={eachUser._id}
                   />
                 );
-              })}
+              }): "No User found"}
           </div>
         </div>
       </>
