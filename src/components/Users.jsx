@@ -12,13 +12,13 @@ const Users = ({name, email, eachUserId}) => {
   return (
     <div className="w-full flex justify-between items-center h-auto p-2 border rounded-md border-gray-400 font-bold mb-2 py-4">
       <div className="flex">
-        <span className="bg-gray-200 w-12 flex items-center justify-center font-bold text-center mr-4 rounded-full">
+        <span className="bg-gray-200 w-12 sm:flex items-center justify-center font-bold text-center mr-4 rounded-full hidden">
           {name[0].toUpperCase()}
         </span>
         <div>
           {name}
           <br />
-          <span className="text-sm font-extralight text-gray-500">{email}</span>
+          <span className="text-sm font-extralight text-gray-500 break-all">{email}</span>
         </div>
       </div>
 

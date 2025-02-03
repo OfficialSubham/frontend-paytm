@@ -8,24 +8,28 @@ import { allUsersSelector, userSelector } from "../store/selector";
 
 const Dashboard = () => {
   const [users, setUsers] = useRecoilState(allUsersAtom);
-  const lodableAllUsers = useRecoilValueLoadable(allUsersSelector)
-  const userInfoAtom = useRecoilValue(userAtom)
+  const lodableAllUsers = useRecoilValueLoadable(allUsersSelector);
+  const userInfoAtom = useRecoilValue(userAtom);
   const [filterSearch, setFilterSearch] = useState("");
   const backendUrl = import.meta.env.VITE_API_URL;
 
+  const handleFilter = (e) => {
+    setFilterSearch(e.target.value);
+  };
+
   useEffect(() => {
-    if(lodableAllUsers.state === "hasValue" && users.length === 0) {
-      setUsers(lodableAllUsers.contents)
+    if (lodableAllUsers.state === "hasValue" && users.length === 0) {
+      setUsers(lodableAllUsers.contents);
     }
-  }, [lodableAllUsers, setUsers])
+  }, [lodableAllUsers, setUsers]);
 
   return (
     lodableAllUsers.state === "hasValue" && (
       <>
-      <NavBar/>
-        <div className="mt-12 p-5">
+        <NavBar />
+        <div className="mt-20 p-5">
           <div className="font-bold text-xl mb-5">
-            Your Balanace : Rs. {userInfoAtom.balance}{" "}
+            Your Balanace : Rs. {userInfoAtom.balance}
           </div>
 
           <div className="flex flex-col">
@@ -35,6 +39,8 @@ const Dashboard = () => {
                 type="text"
                 className="px-3 rounded-md bg-white w-full"
                 placeholder="Search users..."
+                value={filterSearch}
+                onChange={handleFilter}
               />
               <button className="px-3 py-2 bg-black text-white font-bold rounded-md">
                 Search
