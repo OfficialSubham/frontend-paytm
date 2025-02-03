@@ -9,6 +9,6 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   define: {
     "process.env": process.env,
-    ENV_KEY: process.env.ENV_KEY,
+    VITE_API_URL: process.env.VITE_API_URL,
   },
 });
