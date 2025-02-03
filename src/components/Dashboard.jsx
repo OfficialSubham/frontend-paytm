@@ -9,7 +9,8 @@ import { allUsersSelector, userSelector } from "../store/selector";
 const Dashboard = () => {
   const [users, setUsers] = useRecoilState(allUsersAtom);
   const lodableAllUsers = useRecoilValueLoadable(allUsersSelector);
-  const userInfoAtom = useRecoilValue(userAtom);
+    const loadableUserSelector = useRecoilValueLoadable(userSelector)
+  const [userInfoAtom, setUserInfoAtom]= useRecoilState(userAtom)
   const [filterSearch, setFilterSearch] = useState("");
   const backendUrl = import.meta.env.VITE_API_URL;
 
@@ -33,11 +34,28 @@ const Dashboard = () => {
     }
   }
 
+  const updateBalance = async () => {
+    const accountInfo = await axios(`${backendUrl}/user/myinfo`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    if (accountInfo.status === 200) {
+      if (accountInfo.data.info) {
+        setUserInfoAtom({
+          name: accountInfo.data.info.name,
+          balance: accountInfo.data.info.balance
+        })
+      }
+    }
+  }
+
   useEffect(() => {
     if (lodableAllUsers.state === "hasValue" && users.length === 0) {
       setUsers(lodableAllUsers.contents);
     }
-  }, [lodableAllUsers, setUsers]);
+    updateBalance()
+  }, [lodableAllUsers, setUsers,  userInfoAtom]);
 
   return (
     lodableAllUsers.state === "hasValue" && (
