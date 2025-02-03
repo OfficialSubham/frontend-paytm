@@ -1,6 +1,6 @@
 import { atom, selector } from "recoil";
 
-const backendUrl = import.meta.env.VITE_API_URL
+const backendUrl = import.meta.env.ENV_KEY
 
 export const userAtom = atom({
   key: "userAtom",
