@@ -21,7 +21,7 @@ const NavBar = () => {
           Hello, {userInfoAtom.name}
           </div>
 
-          <span className="bg-gray-200 px-3 py-2 font-bold text-center ml-2 rounded-full">
+          <span className="bg-gray-200 px-4 py-2 font-bold text-center ml-2 rounded-full">
             {userInfoAtom.name[0].toUpperCase()}
           </span>
         </div>
